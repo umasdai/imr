@@ -102,7 +102,7 @@
 
     /* Style the header */
     .header {
-        background-color: lightsteelblue;
+        background-color: green;
         padding: 1px 20px;
         color: white;
         text-align: center;

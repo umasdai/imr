@@ -54,6 +54,24 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">Role</label>
+
+                            <div class="col-md-6">
+                                <!-- <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus> -->
+                                <input type="radio" id="admin" name="role" value="1">
+                                  <label for="admin">Admin</label><br>
+                                  <input type="radio" id="staff" name="role" value="2">
+                                  <label for="staff">Staff</label><br>
+
+                                @if ($errors->has('name'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('name') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
 
                             <div class="col-md-6">

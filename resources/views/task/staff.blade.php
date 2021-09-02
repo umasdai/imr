@@ -1,6 +1,9 @@
 <div class="head-nav">
     <a style="font-size: 20px;" href="{{ url('/') }}">< Back</a>
     <h2 style="margin: 0px 15px;">Todo List</h2>
+    <div>
+        <a href="{{ route('logout') }}" style="float: right;">Logout</a>
+    </div>
 </div>
 
 <style>

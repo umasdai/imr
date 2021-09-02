@@ -13,17 +13,30 @@
 
 use App\Http\Controllers;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TasksController;
+use App\Http\Controllers\Auth\LoginController;
 
 Route::get('/', function () {
-    return view('auth.home');
+    // return view('auth.home');
+    return view('auth.login');
 });
 
-Route::get('/lists', 'TaskController@index');
-Route::get('/staff', 'TaskController@staff');
+Route::get('/login', function () {
+    // return view('auth.home');
+    return view('auth.login');
+});
+
+Route::get('/tasks', 'TasksController@index');
+Route::get('/task/create', function () {
+        return view('task.create');
+    });
+Route::post('/task/create/new', 'TasksController@create');
+Route::get('/task/{id}', 'TasksController@show');
+Route::get('/delete/{id}', 'TasksController@delete');
+Route::get('logout', [LoginController::class, 'logout']);
 
 // Route::get('/home', function () {
-//     return view('task.list');
+//     return view('home');
 // });
 
 
