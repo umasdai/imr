@@ -104,16 +104,29 @@
         color: white;
     }
 
-    /* Style the header */
-    .header {
+    /* Style the close button */
+    .update {
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding: 12px 16px 12px 16px;
+    }
+
+    .update:hover {
+        background-color: #f44336;
+        color: white;
+    }
+
+    /* Style the todo-header */
+    .todo-header {
         background-color: green;
         padding: 30px 40px;
         color: white;
         text-align: center;
     }
 
-    /* Clear floats after the header */
-    .header:after {
+    /* Clear floats after the todo-header */
+    .todo-header:after {
         content: "";
         display: table;
         clear: both;
@@ -151,16 +164,45 @@
 
 
 <div class="list-task">
-    <div id="myDIV" class="header">
+    <div id="myDIV" class="todo-header">
         <h2>List of Tasks</h2>
-        <input type="text" id="myInput" placeholder="Enter task...">
-        <span onclick="newElement()" class="addBtn">Add Task</span>
-        <!-- <a href="{{ url('/task/create') }}">Add Task</a> -->
+        <!-- <input type="text" id="myInput" placeholder="Enter task..."> -->
+        <!-- <span onclick="newElement()" class="addBtn">Add Task</span> -->
+        <a href="{{ route('task.create') }}">Add Task</a>
     </div>
 
     <ul id="myUL">
         @foreach($tasks as $task)
-            <li>{{ $task }}</li>
+            @if($task->done == 1)
+            <li class="checked">
+            @else
+            <li>
+            @endif
+                <span class="col-md-3">{{ $task->note }}</span>
+                <span class="col-md-5 pull-right">{{ $task->userid }}</span>
+                @if($task->done == 0)
+                <form action="{{ route('task.update', $task->id) }}" method="POST">
+                    @method('PUT')
+                    @csrf
+                    <input type="text" name="done" value="1" hidden>
+                    <button class="btn btn-success">Mark as Complete</span>
+                </form>
+                @else
+                <form action="{{ route('task.update', $task->id) }}" method="POST">
+                    @method('PUT')
+                    @csrf
+                    <input type="text" name="done" value="0" hidden>
+                    <button class="btn btn-success">Mark as Incomplete</span>
+                </form>
+                @endif
+                <form action="{{ route('task.destroy', $task->id) }}" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button class="close">Remove</span>
+
+                </form>
+                <!-- <span class="close">Remove</span> -->
+            </li>
         @endforeach
         <!-- <li>Pergi gim</li>
         <li class="checked">Bayar bill</li>
@@ -176,33 +218,33 @@
 
 <script>
     // Create a "close" button and append it to each list item
-    var myNodelist = document.getElementsByTagName("LI");
-    var i;
-    for (i = 0; i < myNodelist.length; i++) {
-        var span = document.createElement("SPAN");
-        var txt = document.createTextNode("\u00D7");
-        span.className = "close";
-        span.appendChild(txt);
-        myNodelist[i].appendChild(span);
-    }
+    // var myNodelist = document.getElementsByTagName("LI");
+    // var i;
+    // for (i = 0; i < myNodelist.length; i++) {
+    //     var span = document.createElement("SPAN");
+    //     var txt = document.createTextNode("\u00D7");
+    //     span.className = "close";
+    //     span.appendChild(txt);
+    //     myNodelist[i].appendChild(span);
+    // }
 
     // Click on a close button to hide the current list item
-    var close = document.getElementsByClassName("close");
-    var i;
-    for (i = 0; i < close.length; i++) {
-        close[i].onclick = function() {
-            var div = this.parentElement;
-            div.style.display = "none";
-        }
-    }
+    // var close = document.getElementsByClassName("close");
+    // var i;
+    // for (i = 0; i < close.length; i++) {
+    //     close[i].onclick = function() {
+    //         var div = this.parentElement;
+    //         div.style.display = "none";
+    //     }
+    // }
 
     // Add a "checked" symbol when clicking on a list item
-    var list = document.querySelector('ul');
-    list.addEventListener('click', function(ev) {
-        if (ev.target.tagName === 'LI') {
-            ev.target.classList.toggle('checked');
-        }
-    }, false);
+    // var list = document.querySelector('ul');
+    // list.addEventListener('click', function(ev) {
+    //     if (ev.target.tagName === 'LI') {
+    //         ev.target.classList.toggle('checked');
+    //     }
+    // }, false);
 
     // Create a new list item when clicking on the "Add" button
     function newElement() {

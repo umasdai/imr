@@ -27,12 +27,10 @@ Route::get('/login', function () {
 });
 
 Route::get('/tasks', 'TasksController@index');
-Route::get('/task/create', function () {
-        return view('task.create');
-    });
-Route::post('/task/create/new', 'TasksController@create');
-Route::get('/task/{id}', 'TasksController@show');
-Route::get('/delete/{id}', 'TasksController@delete');
+Route::get('/task/create', 'TasksController@createui')->name('create-task');
+Route::resource('task', 'TasksController');
+// Route::get('/task/{id}', 'TasksController@show');
+// Route::get('/delete/{id}', 'TasksController@delete');
 Route::get('logout', [LoginController::class, 'logout']);
 
 // Route::get('/home', function () {
