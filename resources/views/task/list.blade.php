@@ -46,7 +46,7 @@
 
     /* Style the list items */
     ul li {
-        cursor: pointer;
+        /* cursor: pointer; */
         position: relative;
         padding: 12px 8px 12px 40px;
         background: #eee;
@@ -66,9 +66,9 @@
     }
 
     /* Darker background-color on hover */
-    ul li:hover {
+    /* ul li:hover {
         background: #ddd;
-    }
+    } */
 
     /* When clicked on, add a background color and strike out text */
     ul li.checked {
@@ -160,6 +160,14 @@
     .addBtn:hover {
         background-color: #bbb;
     }
+
+    .pull-right {
+        float: right;
+    }
+
+    .remove {
+        padding-left: 10px;
+    }
 </style>
 
 
@@ -168,7 +176,9 @@
         <h2>List of Tasks</h2>
         <!-- <input type="text" id="myInput" placeholder="Enter task..."> -->
         <!-- <span onclick="newElement()" class="addBtn">Add Task</span> -->
-        <a href="{{ route('task.create') }}">Add Task</a>
+        @if($user->role == 1)
+            <a href="{{ route('task.create') }}">Add Task</a>
+        @endif
     </div>
 
     <ul id="myUL">
@@ -179,28 +189,35 @@
             <li>
             @endif
                 <span class="col-md-3">{{ $task->note }}</span>
-                <span class="col-md-5 pull-right">{{ $task->userid }}</span>
-                @if($task->done == 0)
-                <form action="{{ route('task.update', $task->id) }}" method="POST">
-                    @method('PUT')
-                    @csrf
-                    <input type="text" name="done" value="1" hidden>
-                    <button class="btn btn-success">Mark as Complete</span>
-                </form>
-                @else
-                <form action="{{ route('task.update', $task->id) }}" method="POST">
-                    @method('PUT')
-                    @csrf
-                    <input type="text" name="done" value="0" hidden>
-                    <button class="btn btn-success">Mark as Incomplete</span>
-                </form>
+                <!-- <span class="col-md-5 pull-right">{{ $task->userid }}</span> -->
+                @if($user->role == 1)
+                <div class="pull-right remove">
+                    <form action="{{ route('task.destroy', $task->id) }}" method="POST">
+                        @method('DELETE')
+                        @csrf
+                        <button>Remove</span>
+                    </form>
+                </div>
                 @endif
-                <form action="{{ route('task.destroy', $task->id) }}" method="POST">
-                    @method('DELETE')
-                    @csrf
-                    <button class="close">Remove</span>
-
-                </form>
+                @if($task->done == 0)
+                <div class="pull-right">
+                    <form action="{{ route('task.update', $task->id) }}" method="POST">
+                        @method('PUT')
+                        @csrf
+                        <input type="text" name="done" value="1" hidden>
+                        <button class="btn btn-success">Mark as Complete</span>
+                    </form>
+                </div>
+                @else
+                <div class="pull-right">
+                    <form action="{{ route('task.update', $task->id) }}" method="POST">
+                        @method('PUT')
+                        @csrf
+                        <input type="text" name="done" value="0" hidden>
+                        <button class="btn btn-success">Mark as Incomplete</span>
+                    </form>
+                </div>
+                @endif
                 <!-- <span class="close">Remove</span> -->
             </li>
         @endforeach

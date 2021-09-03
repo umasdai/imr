@@ -21,12 +21,12 @@ class TasksController extends Controller
         $tasks = Task::latest()->get();
 
         
-        if ($user->role == 1) {
-            return view('task.list', ["tasks"=>$tasks]);
-        }
-        else {
-            return view('task.staff', ["tasks"=>$tasks]);
-        }
+        // if ($user->role == 1) {
+            return view('task.list', ["tasks"=>$tasks, "user" => $user]);
+        // }
+        // else {
+        //     return view('task.staff', ["tasks"=>$tasks]);
+        // }
     }
 
     public function create() {
