@@ -168,6 +168,10 @@
     .remove {
         padding-left: 10px;
     }
+
+    .assign {
+        padding-right: 10px;
+    }
 </style>
 
 
@@ -176,7 +180,7 @@
         <h2>List of Tasks</h2>
         <!-- <input type="text" id="myInput" placeholder="Enter task..."> -->
         <!-- <span onclick="newElement()" class="addBtn">Add Task</span> -->
-        @if($user->role == 1)
+        @if($currUser->role == 1)
             <a href="{{ route('task.create') }}">Add Task</a>
         @endif
     </div>
@@ -190,7 +194,7 @@
             @endif
                 <span class="col-md-3">{{ $task->note }}</span>
                 <!-- <span class="col-md-5 pull-right">{{ $task->userid }}</span> -->
-                @if($user->role == 1)
+                @if($currUser->role == 1)
                 <div class="pull-right remove">
                     <form action="{{ route('task.destroy', $task->id) }}" method="POST">
                         @method('DELETE')
@@ -218,6 +222,24 @@
                     </form>
                 </div>
                 @endif
+                @if($currUser->role == 1)
+                <div class="pull-right assign">
+                    <form action="{{ route('task.update', $task->id) }}" method="POST">
+                        @method('PUT')
+                        @csrf
+                        <select name="userid" class="form-select" aria-label="Default select example">
+                            @if (is_null($task->userid))
+                            <option name="userid" selected>Assign to</option>
+                            @endif ()
+                            @foreach ($users as $user)
+                                <option name="userid" value="{{ $user->id }}" @if($task->userid == $user->id) {{ 'selected' }} @endif>{{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                        <button>Update</span>
+                    </form>
+                </div>
+                @endif
+
                 <!-- <span class="close">Remove</span> -->
             </li>
         @endforeach

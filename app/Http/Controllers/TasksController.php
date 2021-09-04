@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Task;
+use App\User as AppUser;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
@@ -16,17 +17,17 @@ class TasksController extends Controller
             '2' => 'Bayar bill',
             '3' => 'Solat dhuha',
         ];
-        $user = Auth::user();
+        $currUser = Auth::user();
+        $users = AppUser::all();
 
         $tasks = Task::latest()->get();
 
-        
-        // if ($user->role == 1) {
-            return view('task.list', ["tasks"=>$tasks, "user" => $user]);
-        // }
-        // else {
-        //     return view('task.staff', ["tasks"=>$tasks]);
-        // }
+        if ($currUser) {
+            return view('task.list', compact('tasks', 'currUser', 'users'));
+        }
+        else {
+            return redirect('/login');
+        }
     }
 
     public function create() {
