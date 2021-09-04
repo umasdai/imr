@@ -10,6 +10,7 @@
 <style>
     .head-nav {
         display: flex;
+        width: 100%;
     }
 
     .create-task {
@@ -18,7 +19,7 @@
 
     .list-task {
         padding-bottom: 20px;
-        max-width: 480px;
+        /* max-width: 480px; */
     }
 
     .container {
@@ -177,11 +178,15 @@
 
 <div class="list-task">
     <div id="myDIV" class="todo-header">
-        <h2>List of Tasks</h2>
-        <!-- <input type="text" id="myInput" placeholder="Enter task..."> -->
-        <!-- <span onclick="newElement()" class="addBtn">Add Task</span> -->
+        <h2>List of Tasks @if ($currUser->role == 2) {{ 'for '. $currUser->name}} @endif</h2>
         @if($currUser->role == 1)
-            <a href="{{ route('task.create') }}">Add Task</a>
+        <form action="{{ route('task.store') }}" method="POST">
+        @method('POST')
+        @csrf
+        <input type="text" name="note" placeholder="Enter task...">
+        <button class="btn btn-success addBtn">Add Task</span>
+        </form>
+            <!-- <a href="{{ route('task.create') }}">Add Task</a> -->
         @endif
     </div>
 
